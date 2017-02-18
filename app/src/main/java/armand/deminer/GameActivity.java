@@ -1,21 +1,31 @@
 package armand.deminer;
 
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
-public class GameActivity extends AppCompatActivity {
-    private int r = 10;
-    private int c = 10;
-    private int m = 5;
+
+// TODO: link UI buttons to a button objects that have fields
+// fields: hasFlag, hasMine, isHidden
+// methods: show, placeFlag
+// change color on click
+
+public class GameActivity extends AppCompatActivity implements View.OnClickListener{
+    private int r = 3;
+    private int c = 3;
+    // private int m = 5;
     private int flags = 0;
     private boolean flagMode = false;
-
+    private Button toggleButton;
+    private GameMap gameMap;
+    TextView flagsNumberView;
     public static int pxToDp(int px) {
         return (int) (px / Resources.getSystem().getDisplayMetrics().density);
     }
@@ -25,25 +35,47 @@ public class GameActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onClick(View view) {
+        final int id = view.getId();
+        System.out.println(id);
+        if (gameMap.getCell(id) != null) {
+            gameMap.revealCell(id);
+            if (gameMap.checkLose()) {
+                flagsNumberView.setText("Loss. Click button to restart!");
+            }
+            else if (gameMap.checkWin()) {
+                flagsNumberView.setText("Win. Click button to restart!");
+            }
+        }
+        else if (toggleButton.getId() == id) {
+            flagMode = !flagMode;
+            toggleButton.setText(Boolean.toString(flagMode));
+        }
 
+
+    }
+
+    private void buildGUI() {
         // main layout of the game, this contains everything
         LinearLayout mainLayout = new LinearLayout(this);
+        mainLayout.setId(View.generateViewId());
         mainLayout.setOrientation(LinearLayout.VERTICAL);
-        mainLayout.setId(0);
         // mainLayout.setWeightSum(5);
 
         // horizontal, top linear view, displays game-related stats and a button
         LinearLayout infoDisplayLayout = new LinearLayout(this);
+        infoDisplayLayout.setId(View.generateViewId());
         infoDisplayLayout.setOrientation(LinearLayout.HORIZONTAL);
 
         // add a flag counter and a flag / display cell mode toggle button
-        TextView flagsNumberView = new TextView(this);
+        flagsNumberView = new TextView(this);
+        flagsNumberView.setId(View.generateViewId());
         flagsNumberView.setText(Integer.toString(flags));
 
-        Button toggleButton = new Button(this);
+        toggleButton = new Button(this);
+        toggleButton.setId(View.generateViewId());
         toggleButton.setText(Boolean.toString(flagMode));
+        toggleButton.setOnClickListener(this);
 
 
         // add the views to the layouts, add the horizontal, inner, top linear layout to the bigger, main layout
@@ -60,27 +92,44 @@ public class GameActivity extends AppCompatActivity {
 
         // create a GridLayout
         GridLayout cellMapLayout = new GridLayout(this);
+        cellMapLayout.setId(View.generateViewId());
         cellMapLayout.setColumnCount(c);
         cellMapLayout.setRowCount(r);
         GridLayout.LayoutParams cellMapLayoutParams = new GridLayout.LayoutParams();
 
+        gameMap = new GameMap(r, c);
+
         for (int row = 0; row < r; ++row) {
             for (int col = 0; col < c; ++col) {
-                Button cell = new Button(this);
-                cell.setMinimumWidth(0);
-                cell.setMinimumHeight(0);
-                cell.setPadding(0, 0, 0, 0);
-                cell.setHeight(0);
-                cell.setWidth(0);
-                // cell.setBackgroundColor(Color.parseColor("#000000"));
+                Button cellButton = new Button(this);
+
+                cellButton.setMinimumWidth(0);
+                cellButton.setMinimumHeight(0);
+                cellButton.setPadding(0, 0, 0, 0);
+                cellButton.setHeight(0);
+                cellButton.setWidth(0);
+                // cell.setBackgroundColor(Color.parseColor("#839496"));
 
                 cellMapLayoutParams = new GridLayout.LayoutParams();
                 cellMapLayoutParams.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1, GridLayout.FILL, 1);
                 cellMapLayoutParams.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1, GridLayout.FILL, 1);
-                cellMapLayoutParams.setMargins(1, 1, 1, 1);
-                cellMapLayout.addView(cell, cellMapLayoutParams);
+                cellMapLayoutParams.setMargins(0, 0, 0, 0);
+                cellButton.setOnClickListener(this);
+                cellButton.setId(View.generateViewId());
+
+                Cell cell = new Cell(cellButton);
+                gameMap.addCellAt(cell, row, col);
+
+
+                cellMapLayout.addView(cellButton, cellMapLayoutParams);
             }
         }
+        /*
+        Initialize everything related to the gameMap
+        have to think when to refresh it frequently, in what method
+         */
+        gameMap.initialize();
+
 
         mainLayoutChildParams = new LinearLayout.LayoutParams(MATCH_PARENT, 0, 9);
         mainLayout.addView(cellMapLayout, mainLayoutChildParams);
@@ -89,5 +138,11 @@ public class GameActivity extends AppCompatActivity {
         // set this activity to display the layout of the mainLayout ViewGroup
         LinearLayout.LayoutParams mainLayoutParams = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         setContentView(mainLayout, mainLayoutParams);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        buildGUI();
     }
 }
