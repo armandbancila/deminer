@@ -31,12 +31,65 @@ public class GameMap {
         return null;
     }
 
-    public void revealCell(int id) {
-        this.getCell(id).reveal();
+
+    public void revealCell(Cell cell) {
+        cell.reveal();
+        int row = cell.getRow();
+        int col = cell.getCol();
+        // cascade reveals recursively
+        // needs optimizing
+        if (!cell.isMined()) {
+            if (row - 1 >= 0) {
+                if (col - 1 >= 0) {
+                    if (!map[row - 1][col - 1].isMined() && !map[row - 1][col - 1].isRevealed()) {
+                        revealCell(map[row - 1][col - 1]);
+                    }
+                }
+                if (!map[row - 1][col].isMined() && !map[row - 1][col].isRevealed()) {
+                    revealCell(map[row - 1][col]);
+                }
+                if (col + 1 < cols) {
+                    if (!map[row - 1][col + 1].isMined() && !map[row - 1][col + 1].isRevealed()) {
+                        revealCell(map[row - 1][col + 1]);
+                    }
+                }
+            }
+            // left and right neighbors
+            if (col - 1 >= 0) {
+                if (!map[row][col - 1].isMined() && !map[row][col - 1].isRevealed()) {
+                    revealCell(map[row][col - 1]);
+                }
+            }
+
+            if (col + 1 < cols) {
+                if (!map[row][col + 1].isMined() && !map[row][col + 1].isRevealed()) {
+                    revealCell(map[row][col + 1]);
+                }
+            }
+            // bottom columns
+            if (row + 1 < rows) {
+                if (col - 1 >= 0) {
+                    if (!map[row + 1][col - 1].isMined() && !map[row + 1][col - 1].isRevealed()) {
+                        revealCell(map[row + 1][col - 1]);
+                    }
+                }
+                if (!map[row + 1][col].isMined() && !map[row + 1][col].isRevealed()) {
+                    revealCell(map[row + 1][col]);
+                }
+                if (col + 1 < cols) {
+                    if (!map[row + 1][col + 1].isMined() && !map[row + 1][col + 1].isRevealed()) {
+                        revealCell(map[row + 1][col + 1]);
+                    }
+                }
+            }
+        }
     }
 
     public void addCellAt(Cell cell, int row, int col) {
+        cell.setRow(row);
+        cell.setCol(col);
         map[row][col] = cell;
+
     }
 
     public void initialize() {

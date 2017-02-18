@@ -18,8 +18,8 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 // change color on click
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener{
-    private int r = 3;
-    private int c = 3;
+    private int r = 10;
+    private int c = 10;
     // private int m = 5;
     private int flags = 0;
     private boolean flagMode = false;
@@ -39,7 +39,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         final int id = view.getId();
         System.out.println(id);
         if (gameMap.getCell(id) != null) {
-            gameMap.revealCell(id);
+            gameMap.revealCell(gameMap.getCell(id));
             if (gameMap.checkLose()) {
                 flagsNumberView.setText("Loss. Click button to restart!");
             }

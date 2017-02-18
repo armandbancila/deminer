@@ -1,5 +1,6 @@
 package armand.deminer;
 
+import android.graphics.Color;
 import android.widget.Button;
 
 public class Cell {
@@ -8,6 +9,8 @@ public class Cell {
     private boolean hasFlag = false;
     private boolean hasMine = false;
     private boolean revealed = false;
+    private int row;
+    private int col;
     private int mineCounter = 0;
 
     public Cell(Button button) {
@@ -19,6 +22,7 @@ public class Cell {
         this.revealed = true;
         if (this.hasMine) {
             button.setText("X");
+            button.setBackgroundColor(Color.RED);
         }
         else {
             button.setText(Integer.toString(mineCounter));
@@ -41,6 +45,22 @@ public class Cell {
 
     public void setMine(boolean hasMine) {
         this.hasMine = hasMine;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public void setCol(int col) {
+        this.col = col;
+    }
+
+    public int getRow() {
+        return this.row;
+    }
+
+    public int getCol() {
+        return this.col;
     }
 
     public int getId () {
