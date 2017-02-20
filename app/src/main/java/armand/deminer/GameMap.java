@@ -90,38 +90,34 @@ public class GameMap {
         map[row][col] = cell;
     }
 
-    public int[][] getSimplexNoiseArray() {
+    public int[][] getSimplexNoiseArray(float scale) {
         SimplexNoise simplexNoise = new SimplexNoise();
-
+        float currentValue;
+        int currentInt;
         int[][] output = new int[rows][cols];
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
-                if (simplexNoise.noise(i, j) >= 0.5) {
-                    output[i][j] = 1;
-                } else if (simplexNoise.noise(i, j) < 0.5 && simplexNoise.noise(i, j) >= 0) {
-                    output[i][j] = 2;
-                } else if (simplexNoise.noise(i, j) < 0 && simplexNoise.noise(i, j) >= -0.5) {
-                    output[i][j] = 3;
-                } else {
-                    output[i][j] = 4;
-                }
+                currentValue = (simplexNoise.noise(i * scale, j * scale) * 50) + 50;
+                currentInt = (int)Math.abs(currentValue);
+                output[i][j] = currentInt;
             }
         }
         return output;
     }
 
     public void initialize() {
-        int[][] noiseArray = getSimplexNoiseArray();
+        int[][] noiseArray1 = getSimplexNoiseArray(0.1f);
         /*
         generate a fixed number of mines
         go through all cells
         assign the mines randomly, evenly
          */
         // int randomNumber;
+
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
-                // randomNumber = rng(1, 10);
-                if (noiseArray[i][j] <= 2 || noiseArray[i][j] == 4) {
+                // randomNumber = rng(1, 100);
+                if (noiseArray1[i][j] > 50) {
                     ++mineCount;
                     map[i][j].setMine(true);
                     // increment adjacent mine counters

@@ -23,7 +23,9 @@ public class Cell {
             button.setText("X");
             button.setBackgroundColor(Color.RED);
         } else {
-            button.setText(Integer.toString(mineCounter));
+            if (mineCounter != 0) {
+                button.setText(Integer.toString(mineCounter));
+            }
             button.setBackgroundColor(Color.GREEN);
         }
     }
