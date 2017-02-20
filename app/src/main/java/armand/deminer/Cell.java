@@ -25,6 +25,7 @@ public class Cell {
         }
         else {
             button.setText(Integer.toString(mineCounter));
+            button.setBackgroundColor(Color.GREEN);
         }
     }
 

@@ -12,8 +12,8 @@ import android.widget.TextView;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener{
-    private int r = 10;
-    private int c = 10;
+    private int r = 20;
+    private int c = 20;
     // private int m = 5;
     private int flags = 0;
     private boolean flagMode = false;
@@ -99,7 +99,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 cellMapLayoutParams.setMargins(0, 0, 0, 0);
 
                 Cell cell = new Cell(cellButton);
-                gameMap.addCellAt(cell, row, col)
+                gameMap.addCellAt(cell, row, col);
                 cellMapLayout.addView(cellButton, cellMapLayoutParams);
             }
         }

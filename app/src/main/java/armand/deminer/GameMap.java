@@ -31,6 +31,7 @@ public class GameMap {
         return null;
     }
 
+    // should exclude diagonally adjacent neighbours
     public void revealCell(Cell cell) {
         cell.reveal();
         int row = cell.getRow();
@@ -87,7 +88,6 @@ public class GameMap {
         cell.setRow(row);
         cell.setCol(col);
         map[row][col] = cell;
-
     }
 
     public void initialize() {
@@ -100,7 +100,7 @@ public class GameMap {
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
                 randomNumber = rng(1, 2);
-                if (randomNumber == 1) {
+                if (randomNumber != 1) {
                     ++mineCount;
                     map[i][j].setMine(true);
                     // increment adjacent mine counters
@@ -162,6 +162,4 @@ public class GameMap {
         }
         return false;
     }
-
-
 }
