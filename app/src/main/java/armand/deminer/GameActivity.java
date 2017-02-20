@@ -9,9 +9,10 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
-public class GameActivity extends AppCompatActivity implements View.OnClickListener{
+public class GameActivity extends AppCompatActivity implements View.OnClickListener {
     private int r = 20;
     private int c = 20;
     // private int m = 5;
@@ -29,12 +30,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             gameMap.revealCell(gameMap.getCell(id));
             if (gameMap.checkLose()) {
                 flagsNumberView.setText("Loss. Click button to restart!");
-            }
-            else if (gameMap.checkWin()) {
+            } else if (gameMap.checkWin()) {
                 flagsNumberView.setText("Win. Click button to restart!");
             }
-        }
-        else if (toggleButton.getId() == id) {
+        } else if (toggleButton.getId() == id) {
             flagMode = !flagMode;
             toggleButton.setText(Boolean.toString(flagMode));
         }

@@ -22,18 +22,17 @@ public class Cell {
         if (this.hasMine) {
             button.setText("X");
             button.setBackgroundColor(Color.RED);
-        }
-        else {
+        } else {
             button.setText(Integer.toString(mineCounter));
             button.setBackgroundColor(Color.GREEN);
         }
     }
 
-    public void incrementMineCounter(){
+    public void incrementMineCounter() {
         ++mineCounter;
     }
 
-    public void setButton(Button button){
+    public void setButton(Button button) {
         this.button = button;
         this.buttonId = button.getId();
     }
@@ -62,7 +61,7 @@ public class Cell {
         return this.col;
     }
 
-    public int getId () {
+    public int getId() {
         return buttonId;
     }
 

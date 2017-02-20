@@ -90,17 +90,38 @@ public class GameMap {
         map[row][col] = cell;
     }
 
+    public int[][] getSimplexNoiseArray() {
+        SimplexNoise simplexNoise = new SimplexNoise();
+
+        int[][] output = new int[rows][cols];
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                if (simplexNoise.noise(i, j) >= 0.5) {
+                    output[i][j] = 1;
+                } else if (simplexNoise.noise(i, j) < 0.5 && simplexNoise.noise(i, j) >= 0) {
+                    output[i][j] = 2;
+                } else if (simplexNoise.noise(i, j) < 0 && simplexNoise.noise(i, j) >= -0.5) {
+                    output[i][j] = 3;
+                } else {
+                    output[i][j] = 4;
+                }
+            }
+        }
+        return output;
+    }
+
     public void initialize() {
+        int[][] noiseArray = getSimplexNoiseArray();
         /*
         generate a fixed number of mines
         go through all cells
         assign the mines randomly, evenly
          */
-        int randomNumber;
+        // int randomNumber;
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
-                randomNumber = rng(1, 2);
-                if (randomNumber != 1) {
+                // randomNumber = rng(1, 10);
+                if (noiseArray[i][j] <= 2 || noiseArray[i][j] == 4) {
                     ++mineCount;
                     map[i][j].setMine(true);
                     // increment adjacent mine counters
