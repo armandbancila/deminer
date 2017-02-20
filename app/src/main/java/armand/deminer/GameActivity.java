@@ -11,12 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
-
-// TODO: link UI buttons to a button objects that have fields
-// fields: hasFlag, hasMine, isHidden
-// methods: show, placeFlag
-// change color on click
-
 public class GameActivity extends AppCompatActivity implements View.OnClickListener{
     private int r = 10;
     private int c = 10;
@@ -26,13 +20,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Button toggleButton;
     private GameMap gameMap;
     TextView flagsNumberView;
-    public static int pxToDp(int px) {
-        return (int) (px / Resources.getSystem().getDisplayMetrics().density);
-    }
-
-    public static int dpToPx(int dp) {
-        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
-    }
 
     @Override
     public void onClick(View view) {
@@ -51,8 +38,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             flagMode = !flagMode;
             toggleButton.setText(Boolean.toString(flagMode));
         }
-
-
     }
 
     private void buildGUI() {
@@ -77,7 +62,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         toggleButton.setText(Boolean.toString(flagMode));
         toggleButton.setOnClickListener(this);
 
-
         // add the views to the layouts, add the horizontal, inner, top linear layout to the bigger, main layout
         // have to use layout parameters, no other way
         // 0dp is recommended in xml when you use linear layouts with weights but here using 0 breaks the view
@@ -98,42 +82,36 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         GridLayout.LayoutParams cellMapLayoutParams = new GridLayout.LayoutParams();
 
         gameMap = new GameMap(r, c);
-
         for (int row = 0; row < r; ++row) {
             for (int col = 0; col < c; ++col) {
                 Button cellButton = new Button(this);
-
                 cellButton.setMinimumWidth(0);
                 cellButton.setMinimumHeight(0);
                 cellButton.setPadding(0, 0, 0, 0);
                 cellButton.setHeight(0);
                 cellButton.setWidth(0);
-                // cell.setBackgroundColor(Color.parseColor("#839496"));
+                cellButton.setOnClickListener(this);
+                cellButton.setId(View.generateViewId());
 
                 cellMapLayoutParams = new GridLayout.LayoutParams();
                 cellMapLayoutParams.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1, GridLayout.FILL, 1);
                 cellMapLayoutParams.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1, GridLayout.FILL, 1);
                 cellMapLayoutParams.setMargins(0, 0, 0, 0);
-                cellButton.setOnClickListener(this);
-                cellButton.setId(View.generateViewId());
 
                 Cell cell = new Cell(cellButton);
-                gameMap.addCellAt(cell, row, col);
-
-
+                gameMap.addCellAt(cell, row, col)
                 cellMapLayout.addView(cellButton, cellMapLayoutParams);
             }
         }
+
         /*
         Initialize everything related to the gameMap
         have to think when to refresh it frequently, in what method
          */
         gameMap.initialize();
 
-
         mainLayoutChildParams = new LinearLayout.LayoutParams(MATCH_PARENT, 0, 9);
         mainLayout.addView(cellMapLayout, mainLayoutChildParams);
-
         // finishes setting up the entire view
         // set this activity to display the layout of the mainLayout ViewGroup
         LinearLayout.LayoutParams mainLayoutParams = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);

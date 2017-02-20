@@ -31,13 +31,11 @@ public class GameMap {
         return null;
     }
 
-
     public void revealCell(Cell cell) {
         cell.reveal();
         int row = cell.getRow();
         int col = cell.getCol();
         // cascade reveals recursively
-        // needs optimizing
         if (!cell.isMined()) {
             if (row - 1 >= 0) {
                 if (col - 1 >= 0) {
@@ -96,8 +94,7 @@ public class GameMap {
         /*
         generate a fixed number of mines
         go through all cells
-        assign the mins randomly, evenly
-
+        assign the mines randomly, evenly
          */
         int randomNumber;
         for (int i = 0; i < rows; ++i) {

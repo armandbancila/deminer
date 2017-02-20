@@ -15,7 +15,6 @@ public class Cell {
 
     public Cell(Button button) {
         setButton(button);
-
     }
 
     public void reveal() {
@@ -31,7 +30,6 @@ public class Cell {
 
     public void incrementMineCounter(){
         ++mineCounter;
-
     }
 
     public void setButton(Button button){
