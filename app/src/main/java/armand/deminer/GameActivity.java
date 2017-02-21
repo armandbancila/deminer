@@ -18,6 +18,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     // private int m = 5;
     private int flags = 0;
     private boolean flagMode = false;
+    private boolean restartMode = false;
     private Button toggleButton;
     private GameMap gameMap;
     TextView flagsNumberView;
@@ -30,12 +31,26 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             gameMap.revealCell(gameMap.getCell(id));
             if (gameMap.checkLose()) {
                 flagsNumberView.setText("Loss. Click button to restart!");
+                restartMode = true;
+                toggleButton.setText("RESTART");
+
             } else if (gameMap.checkWin()) {
                 flagsNumberView.setText("Win. Click button to restart!");
+                restartMode = true;
+                toggleButton.setText("RESTART");
             }
         } else if (toggleButton.getId() == id) {
-            flagMode = !flagMode;
-            toggleButton.setText(Boolean.toString(flagMode));
+            if (restartMode) {
+                restartMode = false;
+                toggleButton.setText("Set flag: " + Boolean.toString(flagMode));
+                buildGUI();
+
+            }
+            else {
+                flagMode = !flagMode;
+                toggleButton.setText("Set flag: " + Boolean.toString(flagMode));
+
+            }
         }
     }
 
@@ -58,7 +73,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         toggleButton = new Button(this);
         toggleButton.setId(View.generateViewId());
-        toggleButton.setText(Boolean.toString(flagMode));
+        toggleButton.setText("Set flag: " + Boolean.toString(flagMode));
         toggleButton.setOnClickListener(this);
 
         // add the views to the layouts, add the horizontal, inner, top linear layout to the bigger, main layout
