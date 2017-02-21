@@ -30,6 +30,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (gameMap.getCell(id) != null) {
             gameMap.revealCell(gameMap.getCell(id));
             if (gameMap.checkLose()) {
+                gameMap.revealMap();
                 flagsNumberView.setText("Loss. Click button to restart!");
                 restartMode = true;
                 toggleButton.setText("RESTART");

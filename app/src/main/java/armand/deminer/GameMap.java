@@ -31,6 +31,14 @@ public class GameMap {
         return null;
     }
 
+    public void revealMap() {
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                map[i][j].reveal();
+            }
+        }
+    }
+
     // should exclude diagonally adjacent neighbours
     // actually, discard that idea, minesweeper uses Moore neighbourhoods
     // excluding diagonally adjacent neighbors = von Neumann neighbourhood
