@@ -67,6 +67,10 @@ public class Cell {
         return buttonId;
     }
 
+    public int getMineCounter() {
+        return this.mineCounter;
+    }
+
     public Button getButton() {
         return button;
     }

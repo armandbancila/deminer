@@ -51,43 +51,84 @@ public class GameMap {
             if (row - 1 >= 0) {
                 if (col - 1 >= 0) {
                     if (!map[row - 1][col - 1].isMined() && !map[row - 1][col - 1].isRevealed()) {
-                        revealCell(map[row - 1][col - 1]);
+                        if (map[row - 1][col - 1].getMineCounter() == 0) {
+                            revealCell(map[row - 1][col - 1]);
+                        }
+                        else {
+                            map[row - 1][col - 1].reveal();
+                        }
+
                     }
                 }
                 if (!map[row - 1][col].isMined() && !map[row - 1][col].isRevealed()) {
-                    revealCell(map[row - 1][col]);
+                    if (map[row - 1][col].getMineCounter() == 0) {
+                        revealCell(map[row - 1][col]);
+                    }
+                    else {
+                        map[row - 1][col].reveal();
+                    }
                 }
                 if (col + 1 < cols) {
                     if (!map[row - 1][col + 1].isMined() && !map[row - 1][col + 1].isRevealed()) {
-                        revealCell(map[row - 1][col + 1]);
+                        if (map[row - 1][col + 1].getMineCounter() == 0) {
+                            revealCell(map[row - 1][col + 1]);
+                        }
+                        else {
+                            map[row - 1][col + 1].reveal();
+                        }
                     }
                 }
             }
             // left and right neighbors
             if (col - 1 >= 0) {
                 if (!map[row][col - 1].isMined() && !map[row][col - 1].isRevealed()) {
-                    revealCell(map[row][col - 1]);
+                    if (map[row][col - 1].getMineCounter() == 0) {
+                        revealCell(map[row][col - 1]);
+                    }
+                    else {
+                        map[row][col - 1].reveal();
+                    }
                 }
             }
 
             if (col + 1 < cols) {
                 if (!map[row][col + 1].isMined() && !map[row][col + 1].isRevealed()) {
-                    revealCell(map[row][col + 1]);
+                    if (map[row][col + 1].getMineCounter() == 0) {
+                        revealCell(map[row][col + 1]);
+                    }
+                    else {
+                        map[row][col + 1].reveal();
+                    }
                 }
             }
             // bottom columns
             if (row + 1 < rows) {
                 if (col - 1 >= 0) {
                     if (!map[row + 1][col - 1].isMined() && !map[row + 1][col - 1].isRevealed()) {
-                        revealCell(map[row + 1][col - 1]);
+                        if (map[row + 1][col - 1].getMineCounter() == 0) {
+                            revealCell(map[row + 1][col - 1]);
+                        }
+                        else {
+                            map[row + 1][col - 1].reveal();
+                        }
                     }
                 }
                 if (!map[row + 1][col].isMined() && !map[row + 1][col].isRevealed()) {
-                    revealCell(map[row + 1][col]);
+                    if (map[row + 1][col].getMineCounter() == 0) {
+                        revealCell(map[row + 1][col]);
+                    }
+                    else {
+                        map[row + 1][col].reveal();
+                    }
                 }
                 if (col + 1 < cols) {
                     if (!map[row + 1][col + 1].isMined() && !map[row + 1][col + 1].isRevealed()) {
-                        revealCell(map[row + 1][col + 1]);
+                        if (map[row + 1][col + 1].getMineCounter() == 0) {
+                            revealCell(map[row + 1][col + 1]);
+                        }
+                        else {
+                            map[row + 1][col + 1].reveal();
+                        }
                     }
                 }
             }
@@ -115,19 +156,21 @@ public class GameMap {
         return output;
     }
 
-    public void initialize() {
+    private void intializeFirstIteration() {
         int[][] noiseArray1 = getSimplexNoiseArray(0.1f);
         /*
         generate a fixed number of mines
         go through all cells
-        assign the mines randomly, evenly
+        assign the mines based on data from the simplex noise array
+        remove some of the mines randomly
          */
-        // int randomNumber;
-
+        int randomNumber;
+        int x;
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
-                // randomNumber = rng(1, 100);
-                if (noiseArray1[i][j] > 50) {
+                randomNumber = rng(1, 2);
+                x = noiseArray1[i][j];
+                if (x >= 40 && x <= 60 && randomNumber == 1) {
                     ++mineCount;
                     map[i][j].setMine(true);
                     // increment adjacent mine counters
@@ -162,6 +205,10 @@ public class GameMap {
                 }
             }
         }
+    }
+
+    public void initialize() {
+        intializeFirstIteration();
     }
 
     public boolean checkWin() {

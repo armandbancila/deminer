@@ -137,5 +137,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         buildGUI();
+        gameMap.revealMap();
     }
 }
