@@ -3,7 +3,7 @@ package armand.deminer;
 import android.graphics.Color;
 import android.widget.Button;
 
-public class Cell {
+class Cell {
     private Button button;
     private int buttonId;
     private boolean hasFlag = false;
@@ -13,11 +13,11 @@ public class Cell {
     private int col;
     private int mineCounter = 0;
 
-    public Cell(Button button) {
+    Cell(Button button) {
         setButton(button);
     }
 
-    public void reveal() {
+    void reveal() {
         this.revealed = true;
         if (this.hasMine) {
             button.setText("X");
@@ -30,60 +30,52 @@ public class Cell {
         }
     }
 
-    public void incrementMineCounter() {
+    void incrementMineCounter() {
         ++mineCounter;
     }
 
-    public void setButton(Button button) {
+    private void setButton(Button button) {
         this.button = button;
         this.buttonId = button.getId();
     }
 
-    public void toggleFlag() {
+    void toggleFlag() {
         this.hasFlag = !this.hasFlag;
     }
 
-    public void setMine(boolean hasMine) {
+    void setMine(boolean hasMine) {
         this.hasMine = hasMine;
     }
 
-    public void setRow(int row) {
+    void setRow(int row) {
         this.row = row;
     }
 
-    public void setCol(int col) {
+    void setCol(int col) {
         this.col = col;
     }
 
-    public int getRow() {
+    int getRow() {
         return this.row;
     }
 
-    public int getCol() {
+    int getCol() {
         return this.col;
     }
 
-    public int getId() {
+    int getId() {
         return buttonId;
     }
 
-    public int getMineCounter() {
+    int getMineCounter() {
         return this.mineCounter;
     }
 
-    public Button getButton() {
-        return button;
-    }
-
-    public boolean isFlagged() {
-        return hasFlag;
-    }
-
-    public boolean isMined() {
+    boolean isMined() {
         return hasMine;
     }
 
-    public boolean isRevealed() {
+    boolean isRevealed() {
         return revealed;
     }
 }

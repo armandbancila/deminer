@@ -2,25 +2,25 @@ package armand.deminer;
 
 import java.util.Random;
 
-public class GameMap {
+class GameMap {
     private int rows;
     private int cols;
     private boolean flagMode = false;
     private Cell[][] map;
     private int mineCount = 0;
 
-    public GameMap(int rows, int cols) {
+    GameMap(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
         map = new Cell[rows][cols];
     }
 
-    public int rng(int min, int max) {
+    int rng(int min, int max) {
         Random random = new Random();
         return random.nextInt((max - min) + 1) + min;
     }
 
-    public Cell getCell(int id) {
+    Cell getCell(int id) {
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
                 if (map[i][j].getId() == id) {
@@ -31,7 +31,7 @@ public class GameMap {
         return null;
     }
 
-    public void revealMap() {
+    void revealMap() {
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
                 map[i][j].reveal();
@@ -42,7 +42,7 @@ public class GameMap {
     // should exclude diagonally adjacent neighbours
     // actually, discard that idea, minesweeper uses Moore neighbourhoods
     // excluding diagonally adjacent neighbors = von Neumann neighbourhood
-    public void revealCell(Cell cell) {
+    void revealCell(Cell cell) {
         cell.reveal();
         int row = cell.getRow();
         int col = cell.getCol();
@@ -135,13 +135,13 @@ public class GameMap {
         }
     }
 
-    public void addCellAt(Cell cell, int row, int col) {
+    void addCellAt(Cell cell, int row, int col) {
         cell.setRow(row);
         cell.setCol(col);
         map[row][col] = cell;
     }
 
-    public int[][] getSimplexNoiseArray(float scale) {
+    private int[][] getSimplexNoiseArray(float scale) {
         SimplexNoise simplexNoise = new SimplexNoise();
         float currentValue;
         int currentInt;
@@ -207,11 +207,11 @@ public class GameMap {
         }
     }
 
-    public void initialize() {
+    void initialize() {
         intializeFirstIteration();
     }
 
-    public boolean checkWin() {
+    boolean checkWin() {
         int counter = 0;
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
@@ -220,13 +220,10 @@ public class GameMap {
                 }
             }
         }
-        if (counter == (rows * cols) - mineCount) {
-            return true;
-        }
-        return false;
+        return counter == (rows * cols) - mineCount;
     }
 
-    public boolean checkLose() {
+    boolean checkLose() {
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
                 if (map[i][j].isRevealed() && map[i][j].isMined()) {

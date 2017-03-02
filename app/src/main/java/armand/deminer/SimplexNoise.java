@@ -2,9 +2,9 @@ package armand.deminer;
 
 import java.util.Random;
 
-public class SimplexNoise {  // Simplex noise in 2D, 3D and 4D
+class SimplexNoise {  // Simplex noise in 2D, 3D and 4D
 
-    public static int RANDOMSEED = 0;
+    private static int RANDOMSEED = 0;
     private static int NUMBEROFSWAPS = 400;
 
     private static Grad grad3[] = {new Grad(1, 1, 0), new Grad(-1, 1, 0), new Grad(1, -1, 0), new Grad(-1, -1, 0),
@@ -31,7 +31,7 @@ public class SimplexNoise {  // Simplex noise in 2D, 3D and 4D
     private short perm[] = new short[512];
     private short permMod12[] = new short[512];
 
-    public SimplexNoise() {
+    SimplexNoise() {
 
         p = p_supply.clone();
 
@@ -76,7 +76,7 @@ public class SimplexNoise {  // Simplex noise in 2D, 3D and 4D
     }
 
     // 2D simplex noise
-    public float noise(float xin, float yin) {
+    float noise(float xin, float yin) {
         double n0, n1, n2; // Noise contributions from the three corners
         // Skew the input space to determine which simplex cell we're in
         double s = (xin + yin) * F2; // Hairy factor for 2D
